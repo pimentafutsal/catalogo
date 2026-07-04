@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FluxGK — Catálogo Científico</title>
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAACFklEQVRYhdWWS2gTQRyHv5mNocTdJKjtBiwqPg4FC+JN9CAoKOpBsZ58HLxIEbyLIIIg6EUoipTgQURFEA8KgoJHvVl6EBNqFMFmqyZFtnm02SYZD3alIrZZu4/6Ow0z/93vm/+wwwrmxTTNHoidA3EQwRZgJf7EBnIC7ul6V7ZQKDTcBeEOMpm1xxTiNmD4BP1b8ppsH7EsK/9LYA7+cL5QwJlst9hRKo2/l6Zp9sztPCw4wGqp8QiIabqePo8Qe0OEuzENPfVJIsWhCOAAKNQpiWJTVAIotklAj0xAkI55qX9yYVVHdUevTXFj6Cr53BjXh4YXrPUk0Gni8Tj9W/uQUi5aG4hArVZn957DNJtN/wVKdouL96u0lPptXgrB5eMG3cmfu3Ycp6P3eRboTmncGkx5fcw/gU47EJjAsuvAGkNy5WQyPAG/O+DtwALI/y0w4yhmHLV44QL555tw5OMsN5/VATh7IMH2jSvCEag2FHde1nkx2sC9Ci49qLCzL87g/gTJRID3wOu8w/DzGt+rf7b9Vc7h3edZzuzz9iMtzEzv0g5xiVkWX4EdIX9KAqNR0QV8kCjuRiUAPBVAzMz0jgD9IcNtTbY3S6DZ0tQAMBkiXCnBacuyyhKgXCyOabK9C1QuBLitBAPfJsYfA2jubKVSKW9Yvy47Pe18RZBGYSDo8glaVYi3ErKabJ/4MlF84y78AMbirtpoVytHAAAAAElFTkSuQmCC">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Catálogo">
+<meta name="theme-color" content="#17181C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<style>
+  :root{
+    --off-white:#F4F1EC;
+    --paper:#FBFAF7;
+    --ink:#17181C;
+    --ink-soft:#4A4B52;
+    --blue:#3E6AE0;
+    --blue-deep:#2C4FB0;
+    --line:#DAD5C9;
+    --tag-bg:#EAE6DC;
+    --amber:#C98A2E;
+    --green:#3E8E5A;
+    --red:#C0453A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--off-white);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.brand,.nav-tab,.btn,.field-label,.card-title{
+    font-family:'Oswald',sans-serif;
+    letter-spacing:.02em;
+  }
+
+  #bgnet{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;}
+
+  header{
+    position:relative;z-index:2;
+    padding:28px 32px 20px;
+    border-bottom:1px solid var(--line);
+    display:flex;align-items:flex-end;justify-content:space-between;
+    flex-wrap:wrap;gap:16px;
+  }
+  .brand{
+    font-size:15px;font-weight:700;color:var(--ink);
+    text-transform:uppercase;letter-spacing:.14em;
+    display:flex;align-items:center;gap:10px;
+  }
+  .brand .dot{width:8px;height:8px;background:var(--blue);border-radius:50%;display:inline-block;}
+  h1{font-size:clamp(28px,4vw,42px);font-weight:700;margin:6px 0 0;color:var(--ink);}
+  .subtitle{font-family:'Inter',sans-serif;font-size:14px;color:var(--ink-soft);margin-top:6px;max-width:560px;}
+  .stats{display:flex;gap:22px;font-family:'Inter',sans-serif;}
+  .stat{text-align:right;}
+  .stat .num{font-family:'Oswald',sans-serif;font-size:26px;font-weight:700;color:var(--blue-deep);line-height:1;}
+  .stat .lbl{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+
+  .toolbar{
+    position:relative;z-index:2;
+    padding:20px 32px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+    border-bottom:1px solid var(--line);
+  }
+  .search-wrap{flex:1;min-width:220px;position:relative;}
+  .search-wrap input{
+    width:100%;padding:12px 14px 12px 38px;border:1.5px solid var(--line);
+    border-radius:8px;background:var(--paper);font-family:'Inter';font-size:14px;color:var(--ink);
+    outline:none;transition:border-color .15s;
+  }
+  .search-wrap input:focus{border-color:var(--blue);}
+  .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--ink-soft);}
+  select{
+    padding:11px 34px 11px 12px;border:1.5px solid var(--line);border-radius:8px;
+    background:var(--paper) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8"><path d="M1 1l5 5 5-5" stroke="%234A4B52" stroke-width="1.5" fill="none"/></svg>') no-repeat right 12px center;
+    font-family:'Inter';font-size:13px;color:var(--ink);appearance:none;cursor:pointer;
+  }
+  .btn{
+    padding:11px 20px;border-radius:8px;border:none;font-size:13px;font-weight:600;
+    text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:transform .1s, background .15s;
+  }
+  .btn-primary{background:var(--blue);color:#fff;}
+  .btn-primary:hover{background:var(--blue-deep);}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--ink);}
+  .btn:active{transform:scale(.97);}
+
+  main{position:relative;z-index:2;padding:24px 32px 80px;}
+  #empty{text-align:center;padding:80px 20px;color:var(--ink-soft);}
+  #empty svg{width:48px;height:48px;stroke:var(--line);margin-bottom:16px;}
+  #empty p{font-size:14px;max-width:340px;margin:0 auto;}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:10px;
+    padding:18px 20px;cursor:pointer;transition:border-color .15s, transform .1s;
+    position:relative;overflow:hidden;
+  }
+  .card:hover{border-color:var(--blue);transform:translateY(-2px);}
+  .card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--source-color,var(--blue));}
+  .card-year{font-family:'Oswald';font-size:12px;font-weight:600;color:var(--ink-soft);letter-spacing:.05em;}
+  .card-title{font-size:16px;font-weight:600;margin:6px 0 4px;line-height:1.3;color:var(--ink);}
+  .card-authors{font-size:12.5px;color:var(--ink-soft);margin-bottom:10px;}
+  .card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+  .tag{background:var(--tag-bg);color:var(--ink);font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em;}
+  .card-finding{font-size:13px;color:var(--ink);line-height:1.5;}
+  .card-foot{margin-top:12px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--ink-soft);}
+  .confidence{display:flex;gap:3px;}
+  .confidence span{width:6px;height:6px;border-radius:50%;background:var(--line);}
+  .confidence span.on{background:var(--blue);}
+
+  .overlay{position:fixed;inset:0;background:rgba(23,24,28,.55);z-index:10;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;}
+  .overlay.open{display:flex;}
+  .modal{background:var(--off-white);border-radius:14px;max-width:780px;width:100%;padding:32px 36px 36px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+  .modal h2{font-size:22px;margin:0 0 4px;color:var(--ink);}
+  .modal .close{position:absolute;top:20px;right:24px;background:none;border:none;cursor:pointer;font-size:22px;color:var(--ink-soft);line-height:1;}
+  .modal .close:hover{color:var(--ink);}
+  .modal-sub{font-size:13px;color:var(--ink-soft);margin-bottom:22px;}
+
+  form .row{display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
+  form .row > div{flex:1;min-width:180px;}
+  .field-label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-bottom:6px;}
+  .field-hint{font-size:11px;color:var(--ink-soft);margin:-8px 0 8px;font-style:italic;}
+  input[type=text], input[type=number], input[type=url], textarea{
+    width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:8px;
+    font-family:'Inter';font-size:13.5px;color:var(--ink);background:var(--paper);outline:none;resize:vertical;
+  }
+  input:focus, textarea:focus, select:focus{border-color:var(--blue);}
+  textarea{min-height:64px;line-height:1.5;}
+  textarea.tall{min-height:110px;}
+
+  .section-divider{
+    font-family:'Oswald';font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--blue-deep);margin:26px 0 12px;padding-top:16px;border-top:1px solid var(--line);
+  }
+  .section-divider:first-of-type{border-top:none;margin-top:6px;padding-top:0;}
+
+  .chip-select{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{padding:7px 13px;border-radius:20px;border:1.5px solid var(--line);font-size:12.5px;cursor:pointer;background:var(--paper);color:var(--ink-soft);user-select:none;transition:all .12s;}
+  .chip.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+
+  .confidence-picker{display:flex;gap:8px;align-items:center;}
+  .confidence-picker .dot-btn{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;}
+  .confidence-picker .dot-btn.on{background:var(--blue);border-color:var(--blue);}
+
+  .modal-actions{display:flex;justify-content:space-between;margin-top:24px;align-items:center;}
+  .danger-link{background:none;border:none;color:var(--red);font-size:12.5px;cursor:pointer;font-family:'Inter';font-weight:600;}
+
+  .detail-block{margin-bottom:20px;}
+  .detail-block h4{font-family:'Oswald';font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--blue-deep);margin:0 0 6px;}
+  .detail-block .rt p{font-size:14px;line-height:1.65;color:var(--ink);margin:0 0 10px;}
+  .detail-block .rt p:last-child{margin-bottom:0;}
+  .rt-table{width:100%;border-collapse:collapse;margin:6px 0 14px;font-size:12.5px;}
+  .rt-table th, .rt-table td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
+  .rt-table th{background:var(--blue-deep);color:#fff;font-family:'Oswald';font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
+  .rt-table tr:nth-child(even) td{background:#F3F1EB;}
+  .detail-meta{display:flex;gap:16px;flex-wrap:wrap;margin:14px 0 18px;font-size:12.5px;color:var(--ink-soft);}
+
+  footer{position:relative;z-index:2;text-align:center;padding:26px;font-size:11.5px;color:var(--ink-soft);border-top:1px solid var(--line);}
+
+  @media(max-width:640px){
+    header,main,.toolbar{padding-left:18px;padding-right:18px;}
+    .stats{gap:14px;}
+  }
+
+  .cat-manage-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);}
+  .cat-manage-row input{flex:1;padding:8px 10px;border:1.5px solid transparent;border-radius:6px;background:transparent;font-family:'Inter';font-size:13.5px;color:var(--ink);}
+  .cat-manage-row input:focus{border-color:var(--blue);background:var(--paper);outline:none;}
+  .cat-manage-row .icon-btn{background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:13px;padding:4px 6px;}
+  .cat-manage-row .icon-btn.save{color:var(--green);font-weight:700;}
+  .cat-manage-row .icon-btn.del{color:var(--red);}
+  .cat-manage-row .icon-btn:hover{color:var(--ink);}
+
+  #printArea{display:none;}
+  @media print{
+    body *{visibility:hidden;}
+    #printArea, #printArea *{visibility:visible;}
+    #printArea{display:block;position:absolute;top:0;left:0;width:100%;padding:20px 30px;}
+    #printArea .p-kicker{font-family:Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;color:#3E6AE0;text-transform:uppercase;margin-bottom:4px;}
+    #printArea h1{font-family:Georgia,serif;font-size:24px;margin:0 0 10px;color:#17181C;}
+    #printArea .p-meta{font-family:Arial,sans-serif;font-size:11px;color:#4A4B52;margin-bottom:4px;}
+    #printArea .p-tags{margin:10px 0 18px;}
+    #printArea .p-tags span{display:inline-block;background:#EAE6DC;color:#17181C;font-size:10px;font-weight:700;padding:3px 9px;border-radius:12px;margin-right:6px;text-transform:uppercase;}
+    #printArea h2{font-family:Arial,sans-serif;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:#2C4FB0;border-left:3px solid #3E6AE0;padding-left:8px;margin:20px 0 8px;}
+    #printArea p{font-family:Georgia,serif;font-size:12.5px;line-height:1.6;color:#17181C;white-space:pre-wrap;margin:0 0 10px;}
+    #printArea table.rt-table{width:100%;border-collapse:collapse;margin:6px 0 14px;font-size:11px;}
+    #printArea table.rt-table th, #printArea table.rt-table td{border:1px solid #DAD5C9;padding:5px 8px;text-align:left;}
+    #printArea table.rt-table th{background:#2C4FB0;color:#fff;font-family:Arial,sans-serif;text-transform:uppercase;font-size:9.5px;}
+    #printArea table.rt-table tr:nth-child(even) td{background:#F3F1EB;}
+    @page{margin:18mm;}
+  }
+</style>
+</head>
+<body>
+
+<svg id="bgnet" xmlns="http://www.w3.org/2000/svg"></svg>
+
+<header>
+  <div>
+    <div class="brand"><span class="dot"></span>FLUXGK</div>
+    <h1>Catálogo Científico</h1>
+    <div class="subtitle">Base de artigos organizada por área — treinamento complementar, biomecânica, fundamentos teóricos e metodologia de goleiros, com conexão explícita à Dinâmica Ecológica e à Abordagem Baseada em Restrições.</div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="num" id="statTotal">0</div><div class="lbl">Artigos</div></div>
+    <div class="stat"><div class="num" id="statCats">0</div><div class="lbl">Categorias</div></div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"/></svg>
+    <input type="text" id="searchInput" placeholder="Buscar por título, autor, achado, categoria...">
+  </div>
+  <select id="filterCategory"><option value="">Todas as categorias</option></select>
+  <button class="btn btn-ghost" id="manageCatsBtn">Gerenciar categorias</button>
+  <select id="filterSource">
+    <option value="">Todos os tipos</option>
+    <option value="Primária">Primária</option>
+    <option value="Revisão">Revisão</option>
+    <option value="Meta-análise">Meta-análise</option>
+    <option value="Livro/Capítulo">Livro/Capítulo</option>
+  </select>
+  <button class="btn btn-ghost" id="exportBtn">Exportar JSON</button>
+  <button class="btn btn-ghost" id="importBtn">Importar JSON</button>
+  <input type="file" id="importFile" accept=".json" style="display:none;">
+  <button class="btn btn-ghost" id="syncStatusBtn">
+    <span id="syncDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--line);margin-right:7px;"></span><span id="syncLabel">Firebase desligado</span>
+  </button>
+  <button class="btn btn-primary" id="newBtn">+ Novo Artigo</button>
+</div>
+
+<main>
+  <div id="empty">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 4h11l5 5v11a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1z"/><path d="M8 12h8M8 16h5"/></svg>
+    <p>Nenhum artigo ainda. Comece adicionando o primeiro estudo do seu catálogo.</p>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>FluxGK Catálogo Científico — sincronizado com Firebase quando conectado</footer>
+
+<!-- Modal: form (create/edit) -->
+<div class="overlay" id="formOverlay">
+  <div class="modal">
+    <button class="close" data-close>&times;</button>
+    <h2 id="formTitle">Novo Artigo</h2>
+    <div class="modal-sub">Preencha com base na leitura da fonte primária sempre que possível.</div>
+    <form id="articleForm">
+      <input type="hidden" id="fId">
+
+      <div class="row">
+        <div style="flex:2;">
+          <label class="field-label">Título do artigo</label>
+          <input type="text" id="fTitle" required>
+        </div>
+        <div>
+          <label class="field-label">Ano</label>
+          <input type="number" id="fYear" min="1900" max="2100" required>
+        </div>
+      </div>
+      <div class="row">
+        <div style="flex:2;">
+          <label class="field-label">Autores</label>
+          <input type="text" id="fAuthors" placeholder="Sobrenome, I. & Sobrenome, I." required>
+        </div>
+        <div>
+          <label class="field-label">Revista / Fonte</label>
+          <input type="text" id="fJournal">
+        </div>
+      </div>
+      <div class="row">
+        <div><label class="field-label">DOI / Link</label><input type="text" id="fLink" placeholder="https://doi.org/..."></div>
+        <div>
+          <label class="field-label">Tipo de fonte</label>
+          <select id="fSourceType">
+            <option>Primária</option><option>Revisão</option><option>Meta-análise</option><option>Livro/Capítulo</option>
+          </select>
+        </div>
+      </div>
+
+      <label class="field-label">Categorias</label>
+      <div class="chip-select" id="categoryChips"></div>
+      <div style="margin-top:8px;display:flex;gap:8px;">
+        <input type="text" id="newCategoryInput" placeholder="Nova categoria..." style="flex:1;">
+        <button type="button" class="btn btn-ghost" id="addCategoryBtn" style="padding:8px 14px;">Adicionar</button>
+      </div>
+
+      <div class="section-divider">Resumo curto (aparece no card)</div>
+      <textarea id="fShortSummary" placeholder="1-2 frases com o achado central, em números sempre que possível" required></textarea>
+
+      <div class="section-divider">1. Contexto e objetivo do estudo</div>
+      <textarea class="tall" id="fContext" placeholder="Qual lacuna o estudo endereça, e qual(is) pergunta(s) de pesquisa orientaram a investigação"></textarea>
+
+      <div class="section-divider">2. Metodologia detalhada</div>
+      <textarea class="tall" id="fMethod" placeholder="Amostra, desenho do estudo, instrumentos, protocolo, processamento de dados"></textarea>
+
+      <div class="section-divider">3. Resultados completos</div>
+      <div class="field-hint">Para criar uma tabela real: | Coluna A | Coluna B | na primeira linha, |---|---| na segunda, e os dados nas linhas seguintes — separado por linha em branco do texto ao redor.</div>
+      <textarea class="tall" id="fResults" placeholder="Todos os resultados-chave, com números e comparações entre grupos/condições" required></textarea>
+
+      <div class="section-divider">4. Discussão dos autores</div>
+      <textarea class="tall" id="fDiscussion" placeholder="Interpretação dos próprios autores, achados inesperados, hipóteses levantadas"></textarea>
+
+      <div class="section-divider">5. Limitações declaradas</div>
+      <textarea id="fLimitations" placeholder="O que os próprios autores apontam como limitação do estudo"></textarea>
+
+      <div class="section-divider">6. Conexão com Dinâmica Ecológica / CLA</div>
+      <div class="field-hint">Como o achado se relaciona a variabilidade, auto-organização, graus de liberdade, restrições de tarefa/ambiente/organismo</div>
+      <textarea class="tall" id="fEcological" placeholder="Conexão explícita com os fundamentos teóricos do seu método"></textarea>
+
+      <div class="section-divider">7. Aplicação prática para goleiros</div>
+      <textarea class="tall" id="fApplication" placeholder="Como isso se traduz em desenho de tarefas, manipulação de restrições, ou controle de carga no seu trabalho"></textarea>
+
+      <div class="section-divider">8. Nota metodológica sobre a fonte</div>
+      <textarea id="fSourceNote" placeholder="Fonte primária lida na íntegra? Dado citado de segunda mão? Alguma ressalva sobre a origem da informação"></textarea>
+
+      <div class="section-divider">Avaliação</div>
+      <label class="field-label">Nível de confiança na evidência</label>
+      <div class="confidence-picker" id="confidencePicker">
+        <div class="dot-btn" data-val="1"></div><div class="dot-btn" data-val="2"></div><div class="dot-btn" data-val="3"></div><div class="dot-btn" data-val="4"></div><div class="dot-btn" data-val="5"></div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="danger-link" id="deleteBtn" style="display:none;">Excluir artigo</button>
+        <div style="margin-left:auto;display:flex;gap:10px;">
+          <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar artigo</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: detail (read) -->
+<div class="overlay" id="detailOverlay">
+  <div class="modal">
+    <button class="close" data-close>&times;</button>
+    <h2 id="dTitle"></h2>
+    <div class="detail-meta" id="dMeta"></div>
+    <div class="card-tags" id="dTags" style="margin-bottom:20px;"></div>
+
+    <div class="detail-block"><h4>Resumo curto</h4><div class="rt" id="dShortSummary"></div></div>
+    <div class="detail-block"><h4>1. Contexto e objetivo</h4><div class="rt" id="dContext"></div></div>
+    <div class="detail-block"><h4>2. Metodologia</h4><div class="rt" id="dMethod"></div></div>
+    <div class="detail-block"><h4>3. Resultados completos</h4><div class="rt" id="dResults"></div></div>
+    <div class="detail-block"><h4>4. Discussão dos autores</h4><div class="rt" id="dDiscussion"></div></div>
+    <div class="detail-block"><h4>5. Limitações</h4><div class="rt" id="dLimitations"></div></div>
+    <div class="detail-block"><h4>6. Conexão com Dinâmica Ecológica / CLA</h4><div class="rt" id="dEcological"></div></div>
+    <div class="detail-block"><h4>7. Aplicação prática para goleiros</h4><div class="rt" id="dApplication"></div></div>
+    <div class="detail-block"><h4>8. Nota metodológica</h4><div class="rt" id="dSourceNote"></div></div>
+
+    <div class="modal-actions">
+      <div style="font-size:12px;color:var(--ink-soft);" id="dConfidenceLabel"></div>
+      <div style="margin-left:auto;display:flex;gap:10px;">
+        <a href="#" id="dLink" target="_blank" class="btn btn-ghost" style="display:none;text-decoration:none;">Abrir fonte</a>
+        <button class="btn btn-ghost" id="dPdfBtn">Baixar PDF</button>
+        <button class="btn btn-primary" id="dEditBtn">Editar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Firebase config -->
+<div class="overlay" id="fbOverlay">
+  <div class="modal" style="max-width:520px;">
+    <button class="close" data-close>&times;</button>
+    <h2>Sincronização Firebase</h2>
+    <div class="modal-sub">Cole as credenciais do seu projeto Firebase (mesmas usadas nos outros módulos FluxGK). Os dados ficam sincronizados em tempo real entre dispositivos, no caminho <code>fluxgk_catalogo/</code> do seu Realtime Database.</div>
+    <div style="margin-bottom:14px;"><label class="field-label">API Key</label><input type="text" id="cfgApiKey"></div>
+    <div class="row">
+      <div><label class="field-label">Auth Domain</label><input type="text" id="cfgAuthDomain" placeholder="seuprojeto.firebaseapp.com"></div>
+      <div><label class="field-label">Project ID</label><input type="text" id="cfgProjectId"></div>
+    </div>
+    <div style="margin-bottom:14px;"><label class="field-label">Database URL</label><input type="text" id="cfgDatabaseUrl" placeholder="https://seuprojeto-default-rtdb.firebaseio.com"></div>
+    <div style="margin-bottom:14px;"><label class="field-label">App ID</label><input type="text" id="cfgAppId"></div>
+    <div class="modal-actions">
+      <button type="button" class="danger-link" id="fbDisconnectBtn">Desconectar</button>
+      <div style="margin-left:auto;display:flex;gap:10px;">
+        <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
+        <button type="button" class="btn btn-primary" id="fbConnectBtn">Conectar e sincronizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: manage categories -->
+<div class="overlay" id="catManageOverlay">
+  <div class="modal" style="max-width:480px;">
+    <button class="close" data-close>&times;</button>
+    <h2>Gerenciar Categorias</h2>
+    <div class="modal-sub">Renomeie ou exclua categorias. Excluir remove a marcação de todos os artigos que a usam (os artigos continuam no catálogo).</div>
+    <div id="catManageList"></div>
+    <div style="margin-top:16px;display:flex;gap:8px;">
+      <input type="text" id="catManageNewInput" placeholder="Nova categoria..." style="flex:1;">
+      <button type="button" class="btn btn-primary" id="catManageAddBtn" style="padding:11px 16px;">Adicionar</button>
+    </div>
+    <div class="modal-actions">
+      <div></div>
+      <button type="button" class="btn btn-ghost" data-close>Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Printable area for PDF export (hidden on screen, shown only when printing) -->
+<div id="printArea"></div>
+
+<script>
+/* ---------------- Storage ---------------- */
+const STORAGE_KEY = 'fluxgk_catalogo_v2';
+let articles = [];
+let categories = ['Treinamento Complementar','Biomecânica','Fundamentos Teóricos (CLA/Dinâmica Ecológica)','Tomada de Decisão','Prevenção de Lesões','Metodologia de Goleiros','Desenvolvimento a Longo Prazo'];
+let editingId = null;
+let currentConfidence = 3;
+let selectedCategories = [];
+let currentDetailId = null;
+
+function load(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const data = JSON.parse(raw);
+      articles = data.articles || [];
+      if(data.categories && data.categories.length) categories = data.categories;
+    }
+  }catch(e){ console.error('Erro ao carregar dados:', e); }
+}
+function save(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify({articles, categories})); }
+  catch(e){ console.error('Erro ao salvar dados:', e); alert('Não foi possível salvar localmente. Verifique o espaço do navegador.'); }
+  pushToFirebase();
+}
+
+/* ---------------- Rendering ---------------- */
+const grid = document.getElementById('grid');
+const emptyState = document.getElementById('empty');
+const catColors = ['#3E6AE0','#C98A2E','#3E8E5A','#C0453A','#8A5CD9','#2C9AA8','#B5651D'];
+function colorForCategory(cat){ const idx = categories.indexOf(cat); return catColors[idx % catColors.length] || '#3E6AE0'; }
+
+function renderCategoryFilter(){
+  const sel = document.getElementById('filterCategory');
+  sel.innerHTML = '<option value="">Todas as categorias</option>' + categories.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+}
+function renderChips(){
+  const wrap = document.getElementById('categoryChips');
+  wrap.innerHTML = categories.map(c=>`<div class="chip ${selectedCategories.includes(c)?'active':''}" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</div>`).join('');
+  wrap.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const c = chip.dataset.cat;
+      if(selectedCategories.includes(c)) selectedCategories = selectedCategories.filter(x=>x!==c);
+      else selectedCategories.push(c);
+      renderChips();
+    });
+  });
+}
+function escapeHtml(str){ if(!str) return ''; const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+function truncate(str,n){ if(!str) return ''; return str.length>n? str.slice(0,n).trim()+'…' : str; }
+
+/* Renders plain text into paragraphs, auto-detecting simple pipe-delimited tables:
+   | Col A | Col B |
+   |---|---|
+   | valor | valor |
+   Any block matching that pattern becomes a real <table>; everything else stays as a paragraph. */
+function parseRichBlocks(text){
+  if(!text) return '<p>—</p>';
+  const blocks = text.split(/\n\s*\n/);
+  return blocks.map(block=>{
+    const lines = block.split('\n').filter(l=>l.trim().length);
+    const looksLikeTable = lines.length>=2 && /^\|/.test(lines[0].trim()) && /^\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)+\|?$/.test(lines[1].trim());
+    if(looksLikeTable){
+      const dataLines = lines.filter((l,i)=> i!==1);
+      const rowsHtml = dataLines.map((l,i)=>{
+        const cells = l.trim().replace(/^\|/,'').replace(/\|$/,'').split('|').map(c=>c.trim());
+        const tag = i===0 ? 'th' : 'td';
+        return '<tr>' + cells.map(c=>`<${tag}>${escapeHtml(c)}</${tag}>`).join('') + '</tr>';
+      }).join('');
+      return `<table class="rt-table">${rowsHtml}</table>`;
+    }
+    return `<p>${escapeHtml(block).replace(/\n/g,'<br>')}</p>`;
+  }).join('');
+}
+
+function renderGrid(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const fCat = document.getElementById('filterCategory').value;
+  const fSrc = document.getElementById('filterSource').value;
+
+  let list = articles.filter(a=>{
+    if(fCat && !(a.categories||[]).includes(fCat)) return false;
+    if(fSrc && a.sourceType !== fSrc) return false;
+    if(q){
+      const hay = [a.title,a.authors,a.shortSummary,a.context,a.results,a.ecological,(a.categories||[]).join(' ')].join(' ').toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  list.sort((a,b)=> (b.year||0) - (a.year||0));
+
+  grid.innerHTML = '';
+  emptyState.style.display = list.length ? 'none' : 'block';
+  if(articles.length === 0){
+    emptyState.querySelector('p').textContent = 'Nenhum artigo ainda. Comece adicionando o primeiro estudo do seu catálogo.';
+  } else if(list.length === 0){
+    emptyState.style.display = 'block';
+    emptyState.querySelector('p').textContent = 'Nenhum artigo encontrado com esses filtros.';
+  }
+
+  list.forEach(a=>{
+    const primaryCat = (a.categories||[])[0];
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.setProperty('--source-color', colorForCategory(primaryCat));
+    card.innerHTML = `
+      <div class="card-year">${a.year||'—'}</div>
+      <div class="card-title">${escapeHtml(a.title)}</div>
+      <div class="card-authors">${escapeHtml(a.authors)}${a.journal? ' · '+escapeHtml(a.journal):''}</div>
+      <div class="card-tags">${(a.categories||[]).map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join('')}</div>
+      <div class="card-finding">${escapeHtml(truncate(a.shortSummary,150))}</div>
+      <div class="card-foot">
+        <span>${escapeHtml(a.sourceType||'')}</span>
+        <div class="confidence">${[1,2,3,4,5].map(i=>`<span class="${i<=(a.confidence||0)?'on':''}"></span>`).join('')}</div>
+      </div>`;
+    card.addEventListener('click', ()=> openDetail(a.id));
+    grid.appendChild(card);
+  });
+
+  document.getElementById('statTotal').textContent = articles.length;
+  document.getElementById('statCats').textContent = categories.length;
+}
+
+/* ---------------- Form modal ---------------- */
+const formOverlay = document.getElementById('formOverlay');
+const detailOverlay = document.getElementById('detailOverlay');
+
+const FORM_FIELDS = ['title','year','authors','journal','link','sourceType','shortSummary','context','method','results','discussion','limitations','ecological','application','sourceNote'];
+const FIELD_TO_INPUT = {title:'fTitle',year:'fYear',authors:'fAuthors',journal:'fJournal',link:'fLink',sourceType:'fSourceType',shortSummary:'fShortSummary',context:'fContext',method:'fMethod',results:'fResults',discussion:'fDiscussion',limitations:'fLimitations',ecological:'fEcological',application:'fApplication',sourceNote:'fSourceNote'};
+
+function openForm(article){
+  editingId = article ? article.id : null;
+  document.getElementById('formTitle').textContent = article ? 'Editar Artigo' : 'Novo Artigo';
+  document.getElementById('fId').value = article ? article.id : '';
+  FORM_FIELDS.forEach(f=>{
+    document.getElementById(FIELD_TO_INPUT[f]).value = article ? (article[f] || '') : '';
+  });
+  if(!article) document.getElementById('fSourceType').value = 'Primária';
+  selectedCategories = article ? [...(article.categories||[])] : [];
+  currentConfidence = article ? (article.confidence||3) : 3;
+  renderChips();
+  renderConfidencePicker();
+  document.getElementById('deleteBtn').style.display = article ? 'inline-block' : 'none';
+  formOverlay.classList.add('open');
+  formOverlay.scrollTop = 0;
+}
+function closeForm(){ formOverlay.classList.remove('open'); }
+
+function renderConfidencePicker(){
+  document.querySelectorAll('#confidencePicker .dot-btn').forEach(d=>{
+    d.classList.toggle('on', parseInt(d.dataset.val)<=currentConfidence);
+  });
+}
+document.getElementById('confidencePicker').addEventListener('click', e=>{
+  if(e.target.classList.contains('dot-btn')){ currentConfidence = parseInt(e.target.dataset.val); renderConfidencePicker(); }
+});
+document.getElementById('addCategoryBtn').addEventListener('click', ()=>{
+  const input = document.getElementById('newCategoryInput');
+  const val = input.value.trim();
+  if(val && !categories.includes(val)){ categories.push(val); selectedCategories.push(val); save(); renderChips(); renderCategoryFilter(); }
+  input.value = '';
+});
+
+document.getElementById('articleForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const data = { id: editingId || 'a_'+Date.now(), categories:[...selectedCategories], confidence: currentConfidence };
+  FORM_FIELDS.forEach(f=>{
+    const el = document.getElementById(FIELD_TO_INPUT[f]);
+    data[f] = f==='year' ? (parseInt(el.value)||null) : el.value.trim();
+  });
+  if(editingId){
+    const idx = articles.findIndex(a=>a.id===editingId);
+    if(idx>-1) articles[idx] = data;
+  } else { articles.push(data); }
+  save(); renderGrid(); closeForm();
+});
+document.getElementById('deleteBtn').addEventListener('click', ()=>{
+  if(confirm('Excluir este artigo do catálogo? Essa ação não pode ser desfeita.')){
+    articles = articles.filter(a=>a.id!==editingId);
+    save(); renderGrid(); closeForm();
+  }
+});
+
+/* ---------------- Detail modal ---------------- */
+function openDetail(id){
+  const a = articles.find(x=>x.id===id);
+  if(!a) return;
+  currentDetailId = id;
+  document.getElementById('dTitle').textContent = a.title;
+  document.getElementById('dMeta').innerHTML = `<span>${escapeHtml(a.authors)}</span><span>${a.year||''}</span><span>${escapeHtml(a.journal||'')}</span><span>${escapeHtml(a.sourceType||'')}</span>`;
+  document.getElementById('dTags').innerHTML = (a.categories||[]).map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join('');
+  const map = {dShortSummary:'shortSummary',dContext:'context',dMethod:'method',dResults:'results',dDiscussion:'discussion',dLimitations:'limitations',dEcological:'ecological',dApplication:'application',dSourceNote:'sourceNote'};
+  Object.entries(map).forEach(([elId,field])=>{ document.getElementById(elId).innerHTML = parseRichBlocks(a[field]); });
+  document.getElementById('dConfidenceLabel').textContent = 'Confiança na evidência: ' + '●'.repeat(a.confidence||0) + '○'.repeat(5-(a.confidence||0));
+  const linkEl = document.getElementById('dLink');
+  if(a.link){ linkEl.href = a.link; linkEl.style.display='inline-block'; } else { linkEl.style.display='none'; }
+  document.getElementById('dEditBtn').onclick = ()=>{ detailOverlay.classList.remove('open'); openForm(a); };
+  detailOverlay.classList.add('open');
+}
+
+/* ---------------- Events ---------------- */
+document.getElementById('newBtn').addEventListener('click', ()=> openForm(null));
+document.querySelectorAll('[data-close]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{ formOverlay.classList.remove('open'); detailOverlay.classList.remove('open'); document.getElementById('fbOverlay').classList.remove('open'); document.getElementById('catManageOverlay').classList.remove('open'); });
+});
+[formOverlay, detailOverlay, document.getElementById('fbOverlay'), document.getElementById('catManageOverlay')].forEach(ov=>{
+  ov.addEventListener('click', e=>{ if(e.target===ov) ov.classList.remove('open'); });
+});
+document.getElementById('searchInput').addEventListener('input', renderGrid);
+document.getElementById('filterCategory').addEventListener('change', renderGrid);
+document.getElementById('filterSource').addEventListener('change', renderGrid);
+
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify({articles,categories}, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'fluxgk_catalogo_backup.json'; a.click();
+  URL.revokeObjectURL(url);
+});
+document.getElementById('importBtn').addEventListener('click', ()=> document.getElementById('importFile').click());
+document.getElementById('importFile').addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = evt=>{
+    try{
+      const data = JSON.parse(evt.target.result);
+      if(data.articles){
+        if(confirm(`Importar/atualizar ${data.articles.length} artigo(s)? Artigos com o mesmo ID serão substituídos pela versão importada.`)){
+          data.articles.forEach(a=>{
+            const idx = articles.findIndex(x=>x.id===a.id);
+            if(idx>-1) articles[idx] = a; else articles.push(a);
+          });
+          if(data.categories) data.categories.forEach(c=>{ if(!categories.includes(c)) categories.push(c); });
+          save(); renderCategoryFilter(); renderGrid();
+        }
+      }
+    }catch(err){ alert('Arquivo inválido. Verifique se é um JSON exportado por este catálogo.'); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+/* ---------------- Category management ---------------- */
+const catManageOverlay = document.getElementById('catManageOverlay');
+document.getElementById('manageCatsBtn').addEventListener('click', ()=>{ renderCatManageList(); catManageOverlay.classList.add('open'); });
+
+function renderCatManageList(){
+  const wrap = document.getElementById('catManageList');
+  wrap.innerHTML = categories.map((c,i)=>`
+    <div class="cat-manage-row" data-idx="${i}">
+      <input type="text" value="${escapeHtml(c)}">
+      <button class="icon-btn save" data-action="save">Salvar</button>
+      <button class="icon-btn del" data-action="del">Excluir</button>
+    </div>`).join('');
+  wrap.querySelectorAll('.cat-manage-row').forEach(row=>{
+    const idx = parseInt(row.dataset.idx);
+    row.querySelector('[data-action="save"]').addEventListener('click', ()=>{
+      const newName = row.querySelector('input').value.trim();
+      const oldName = categories[idx];
+      if(!newName || newName===oldName) return;
+      if(categories.includes(newName)){ alert('Já existe uma categoria com esse nome.'); return; }
+      categories[idx] = newName;
+      articles.forEach(a=>{ a.categories = (a.categories||[]).map(c=> c===oldName? newName : c); });
+      save(); renderCategoryFilter(); renderGrid(); renderCatManageList();
+    });
+    row.querySelector('[data-action="del"]').addEventListener('click', ()=>{
+      const name = categories[idx];
+      if(confirm(`Excluir a categoria "${name}"? Ela será removida de todos os artigos, que continuarão no catálogo.`)){
+        categories.splice(idx,1);
+        articles.forEach(a=>{ a.categories = (a.categories||[]).filter(c=>c!==name); });
+        save(); renderCategoryFilter(); renderGrid(); renderCatManageList();
+      }
+    });
+  });
+}
+document.getElementById('catManageAddBtn').addEventListener('click', ()=>{
+  const input = document.getElementById('catManageNewInput');
+  const val = input.value.trim();
+  if(val && !categories.includes(val)){ categories.push(val); save(); renderCategoryFilter(); renderCatManageList(); }
+  input.value = '';
+});
+
+/* ---------------- PDF export (via print) ---------------- */
+function exportArticlePdf(a){
+  const sectionMap = [
+    ['Resumo curto', a.shortSummary],
+    ['1. Contexto e objetivo', a.context],
+    ['2. Metodologia', a.method],
+    ['3. Resultados completos', a.results],
+    ['4. Discussão dos autores', a.discussion],
+    ['5. Limitações', a.limitations],
+    ['6. Conexão com Dinâmica Ecológica / CLA', a.ecological],
+    ['7. Aplicação prática para goleiros', a.application],
+    ['8. Nota metodológica', a.sourceNote]
+  ];
+  const printArea = document.getElementById('printArea');
+  printArea.innerHTML = `
+    <div class="p-kicker">FluxGK · Catálogo Científico</div>
+    <h1>${escapeHtml(a.title)}</h1>
+    <div class="p-meta">${escapeHtml(a.authors)} · ${a.year||''} · ${escapeHtml(a.journal||'')}</div>
+    <div class="p-meta">${escapeHtml(a.sourceType||'')} · Confiança: ${'●'.repeat(a.confidence||0)}${'○'.repeat(5-(a.confidence||0))}${a.link? ' · '+escapeHtml(a.link) : ''}</div>
+    <div class="p-tags">${(a.categories||[]).map(c=>`<span>${escapeHtml(c)}</span>`).join('')}</div>
+    ${sectionMap.map(([h,txt])=> txt ? `<h2>${escapeHtml(h)}</h2>${parseRichBlocks(txt)}` : '').join('')}
+  `;
+  document.title = (a.title||'artigo').slice(0,60);
+  window.print();
+}
+document.getElementById('dPdfBtn').addEventListener('click', ()=>{
+  const a = articles.find(x=>x.id===currentDetailId);
+  if(a) exportArticlePdf(a);
+});
+
+/* ---------------- Firebase sync ---------------- */
+const FB_CONFIG_KEY = 'fluxgk_catalogo_fbconfig';
+let fbApp = null, fbDb = null, fbConnected = false, suppressNextWrite = false;
+
+function getFbConfig(){ try{ return JSON.parse(localStorage.getItem(FB_CONFIG_KEY) || 'null'); }catch(e){ return null; } }
+function setSyncStatus(connected, label){
+  fbConnected = connected;
+  document.getElementById('syncDot').style.background = connected ? 'var(--green)' : 'var(--line)';
+  document.getElementById('syncLabel').textContent = label;
+}
+function initFirebase(config){
+  try{
+    if(fbApp){ fbApp.delete().catch(()=>{}); }
+    fbApp = firebase.initializeApp(config, 'fluxgkCatalogo_'+Date.now());
+    fbDb = fbApp.database();
+    setSyncStatus(false, 'Autenticando...');
+    fbApp.auth().signInAnonymously().then(()=>{
+      setSyncStatus(true, 'Sincronizado');
+      attachDbListener();
+    }).catch(err=>{
+      console.error('Erro de autenticação Firebase:', err);
+      setSyncStatus(false, 'Erro de autenticação');
+      alert('Não foi possível autenticar. Verifique se "Autenticação anônima" está ativada no console do Firebase (Build > Authentication > Sign-in method).');
+    });
+  }catch(e){
+    console.error('Falha ao inicializar Firebase:', e);
+    setSyncStatus(false, 'Falha na configuração');
+    alert('Não foi possível conectar ao Firebase. Verifique as credenciais.');
+  }
+}
+function attachDbListener(){
+  fbDb.ref('fluxgk_catalogo').on('value', snap=>{
+    const data = snap.val();
+    if(data){
+      suppressNextWrite = true;
+      articles = data.articles ? Object.values(data.articles) : [];
+      if(data.categories) categories = Object.values(data.categories);
+      renderCategoryFilter(); renderGrid();
+    }
+  }, err=>{ console.error('Erro de sincronização Firebase:', err); setSyncStatus(false, 'Erro de conexão — verifique as regras do banco'); });
+}
+function pushToFirebase(){
+  if(!fbConnected || !fbDb) return;
+  if(suppressNextWrite){ suppressNextWrite = false; return; }
+  const articlesObj = {}; articles.forEach(a=> articlesObj[a.id] = a);
+  fbDb.ref('fluxgk_catalogo').set({articles: articlesObj, categories}).catch(err=> console.error('Erro ao enviar dados ao Firebase:', err));
+}
+document.getElementById('syncStatusBtn').addEventListener('click', ()=>{
+  const cfg = getFbConfig();
+  if(cfg){
+    document.getElementById('cfgApiKey').value = cfg.apiKey || '';
+    document.getElementById('cfgAuthDomain').value = cfg.authDomain || '';
+    document.getElementById('cfgProjectId').value = cfg.projectId || '';
+    document.getElementById('cfgDatabaseUrl').value = cfg.databaseURL || '';
+    document.getElementById('cfgAppId').value = cfg.appId || '';
+  }
+  document.getElementById('fbOverlay').classList.add('open');
+});
+document.getElementById('fbConnectBtn').addEventListener('click', ()=>{
+  const config = {
+    apiKey: document.getElementById('cfgApiKey').value.trim(),
+    authDomain: document.getElementById('cfgAuthDomain').value.trim(),
+    projectId: document.getElementById('cfgProjectId').value.trim(),
+    databaseURL: document.getElementById('cfgDatabaseUrl').value.trim(),
+    appId: document.getElementById('cfgAppId').value.trim()
+  };
+  if(!config.apiKey || !config.databaseURL){ alert('Preencha ao menos API Key e Database URL.'); return; }
+  localStorage.setItem(FB_CONFIG_KEY, JSON.stringify(config));
+  initFirebase(config);
+  document.getElementById('fbOverlay').classList.remove('open');
+});
+document.getElementById('fbDisconnectBtn').addEventListener('click', ()=>{
+  if(confirm('Desconectar deste projeto Firebase? Os dados continuarão salvos localmente neste navegador.')){
+    localStorage.removeItem(FB_CONFIG_KEY);
+    if(fbDb) fbDb.ref('fluxgk_catalogo').off();
+    fbApp = null; fbDb = null;
+    setSyncStatus(false, 'Firebase desligado');
+    document.getElementById('fbOverlay').classList.remove('open');
+  }
+});
+
+/* ---------------- Decorative node network background ---------------- */
+function drawNetwork(){
+  const svg = document.getElementById('bgnet');
+  const w = window.innerWidth, h = 420;
+  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  svg.innerHTML = '';
+  const nodes = [];
+  const count = Math.max(10, Math.floor(w/140));
+  for(let i=0;i<count;i++){ nodes.push({x: Math.random()*w, y: Math.random()*h}); }
+  const ns = 'http://www.w3.org/2000/svg';
+  nodes.forEach((n,i)=>{
+    nodes.forEach((m,j)=>{
+      if(j<=i) return;
+      const dist = Math.hypot(n.x-m.x, n.y-m.y);
+      if(dist < 220){
+        const line = document.createElementNS(ns,'line');
+        line.setAttribute('x1', n.x); line.setAttribute('y1', n.y);
+        line.setAttribute('x2', m.x); line.setAttribute('y2', m.y);
+        line.setAttribute('stroke', '#3E6AE0'); line.setAttribute('stroke-width','1');
+        line.setAttribute('opacity', (1 - dist/220)*0.5);
+        svg.appendChild(line);
+      }
+    });
+  });
+  nodes.forEach(n=>{
+    const c = document.createElementNS(ns,'circle');
+    c.setAttribute('cx', n.x); c.setAttribute('cy', n.y); c.setAttribute('r', 2.5); c.setAttribute('fill', '#3E6AE0');
+    svg.appendChild(c);
+  });
+}
+window.addEventListener('resize', drawNetwork);
+
+/* ---------------- Init ---------------- */
+function seedIfEmpty(){
+  if(articles.length) return;
+  articles.push({
+    id:'seed_1',
+    title:'Ground reaction forces at different speeds of human walking and running',
+    year:1989, authors:'Nilsson, J. & Thorstensson, A.', journal:'Acta Physiologica Scandinavica, 136, 217-227',
+    link:'https://onlinelibrary.wiley.com/doi/10.1111/j.1748-1716.1989.tb08655.x',
+    sourceType:'Primária', categories:['Biomecânica'],
+    shortSummary:'Pico de força vertical na corrida cresce de ~2,0 a ~2,9x o peso corporal até 6,0 m/s; padrão de pisada (retropé x antepé) altera a forma da curva de força.',
+    context:'Comparar diretamente caminhada e corrida numa mesma amostra e condições, cobrindo ampla faixa de velocidades — lacuna na literatura da época.',
+    method:'12 homens fisicamente ativos, plataforma de força Kistler, velocidades de 1,0-3,0 m/s (caminhada) e 1,5-6,0 m/s (corrida). Classificação por padrão de pisada via análise fílmica.',
+    results:'Pico vertical de ~1,0 b.w. (caminhada lenta) a ~1,5 b.w. (caminhada rápida); 2,0 a 2,9 b.w. na corrida em velocidades altas. Correlação de -0,67 entre pico de força e tempo de contato.',
+    discussion:'Diferenças entre caminhar e correr refletem estratégias motoras distintas, não apenas diferença de intensidade — na corrida praticamente não há transferência de energia potencial-cinética como na caminhada.',
+    limitations:'Amostra pequena e exclusivamente masculina; apenas pé direito estudado; condições específicas de calçado e superfície.',
+    ecological:'A diferença estrutural entre padrões de pisada reflete diferentes soluções de coordenação para a mesma tarefa, moduladas por restrições do organismo e da tarefa — evidência contra um "padrão ideal" único de pisada.',
+    application:'Ao manipular restrições de tarefa em deslocamento, espere e permita variabilidade nos padrões de contato do pé — isso é funcional, não erro a corrigir.',
+    sourceNote:'Fonte primária lida na íntegra (PDF completo).',
+    confidence:4
+  });
+  save();
+}
+
+load();
+seedIfEmpty();
+renderCategoryFilter();
+renderGrid();
+drawNetwork();
+setSyncStatus(false, 'Firebase desligado');
+const savedFbConfig = getFbConfig();
+if(savedFbConfig) initFirebase(savedFbConfig);
+</script>
+</body>
+</html>
