@@ -924,7 +924,20 @@ renderCategoryFilter();
 renderGrid();
 drawNetwork();
 setSyncStatus(false, 'Firebase desligado');
-const savedFbConfig = getFbConfig();
+/* Default project credentials — embedded so the app auto-connects on any device.
+   The API key is a public client identifier, not a secret; access is protected by
+   the Realtime Database rules (anonymous-auth-required) configured for this project. */
+const DEFAULT_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyBxValh_iewErFi-Y3cwHj-1NZftrwQ14A",
+  authDomain: "fluxgk-catalogo.firebaseapp.com",
+  projectId: "fluxgk-catalogo",
+  databaseURL: "https://fluxgk-catalogo-default-rtdb.europe-west1.firebasedatabase.app",
+  storageBucket: "fluxgk-catalogo.firebasestorage.app",
+  messagingSenderId: "864899584836",
+  appId: "1:864899584836:web:593cf122492f8fc6457d11"
+};
+
+const savedFbConfig = getFbConfig() || DEFAULT_FIREBASE_CONFIG;
 if(savedFbConfig) initFirebase(savedFbConfig);
 </script>
 </body>
