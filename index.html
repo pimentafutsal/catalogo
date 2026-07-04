@@ -285,6 +285,17 @@
           </select>
         </div>
       </div>
+      <div class="row">
+        <div>
+          <label class="field-label">Tipo de artigo (define os rótulos das seções abaixo)</label>
+          <select id="fKind">
+            <option>Estudo Empírico</option>
+            <option>Revisão Teórica</option>
+            <option>Meta-análise</option>
+            <option>Capítulo/Livro</option>
+          </select>
+        </div>
+      </div>
 
       <label class="field-label">Categorias</label>
       <div class="chip-select" id="categoryChips"></div>
@@ -296,30 +307,30 @@
       <div class="section-divider">Resumo curto (aparece no card)</div>
       <textarea id="fShortSummary" placeholder="1-2 frases com o achado central, em números sempre que possível" required></textarea>
 
-      <div class="section-divider">1. Contexto e objetivo do estudo</div>
+      <div class="section-divider" id="lblContext">1. Contexto e objetivo do estudo</div>
       <textarea class="tall" id="fContext" placeholder="Qual lacuna o estudo endereça, e qual(is) pergunta(s) de pesquisa orientaram a investigação"></textarea>
 
-      <div class="section-divider">2. Metodologia detalhada</div>
+      <div class="section-divider" id="lblMethod">2. Metodologia detalhada</div>
       <textarea class="tall" id="fMethod" placeholder="Amostra, desenho do estudo, instrumentos, protocolo, processamento de dados"></textarea>
 
-      <div class="section-divider">3. Resultados completos</div>
+      <div class="section-divider" id="lblResults">3. Resultados completos</div>
       <div class="field-hint">Para criar uma tabela real: | Coluna A | Coluna B | na primeira linha, |---|---| na segunda, e os dados nas linhas seguintes — separado por linha em branco do texto ao redor.</div>
       <textarea class="tall" id="fResults" placeholder="Todos os resultados-chave, com números e comparações entre grupos/condições" required></textarea>
 
-      <div class="section-divider">4. Discussão dos autores</div>
+      <div class="section-divider" id="lblDiscussion">4. Discussão dos autores</div>
       <textarea class="tall" id="fDiscussion" placeholder="Interpretação dos próprios autores, achados inesperados, hipóteses levantadas"></textarea>
 
-      <div class="section-divider">5. Limitações declaradas</div>
+      <div class="section-divider" id="lblLimitations">5. Limitações declaradas</div>
       <textarea id="fLimitations" placeholder="O que os próprios autores apontam como limitação do estudo"></textarea>
 
-      <div class="section-divider">6. Conexão com Dinâmica Ecológica / CLA</div>
+      <div class="section-divider" id="lblEcological">6. Conexão com Dinâmica Ecológica / CLA</div>
       <div class="field-hint">Como o achado se relaciona a variabilidade, auto-organização, graus de liberdade, restrições de tarefa/ambiente/organismo</div>
       <textarea class="tall" id="fEcological" placeholder="Conexão explícita com os fundamentos teóricos do seu método"></textarea>
 
-      <div class="section-divider">7. Aplicação prática para goleiros</div>
+      <div class="section-divider" id="lblApplication">7. Aplicação prática para goleiros</div>
       <textarea class="tall" id="fApplication" placeholder="Como isso se traduz em desenho de tarefas, manipulação de restrições, ou controle de carga no seu trabalho"></textarea>
 
-      <div class="section-divider">8. Nota metodológica sobre a fonte</div>
+      <div class="section-divider" id="lblSourceNote">8. Nota metodológica sobre a fonte</div>
       <textarea id="fSourceNote" placeholder="Fonte primária lida na íntegra? Dado citado de segunda mão? Alguma ressalva sobre a origem da informação"></textarea>
 
       <div class="section-divider">Avaliação</div>
@@ -348,14 +359,14 @@
     <div class="card-tags" id="dTags" style="margin-bottom:20px;"></div>
 
     <div class="detail-block"><h4>Resumo curto</h4><div class="rt" id="dShortSummary"></div></div>
-    <div class="detail-block"><h4>1. Contexto e objetivo</h4><div class="rt" id="dContext"></div></div>
-    <div class="detail-block"><h4>2. Metodologia</h4><div class="rt" id="dMethod"></div></div>
-    <div class="detail-block"><h4>3. Resultados completos</h4><div class="rt" id="dResults"></div></div>
-    <div class="detail-block"><h4>4. Discussão dos autores</h4><div class="rt" id="dDiscussion"></div></div>
-    <div class="detail-block"><h4>5. Limitações</h4><div class="rt" id="dLimitations"></div></div>
-    <div class="detail-block"><h4>6. Conexão com Dinâmica Ecológica / CLA</h4><div class="rt" id="dEcological"></div></div>
-    <div class="detail-block"><h4>7. Aplicação prática para goleiros</h4><div class="rt" id="dApplication"></div></div>
-    <div class="detail-block"><h4>8. Nota metodológica</h4><div class="rt" id="dSourceNote"></div></div>
+    <div class="detail-block"><h4 id="hContext">1. Contexto e objetivo</h4><div class="rt" id="dContext"></div></div>
+    <div class="detail-block"><h4 id="hMethod">2. Metodologia</h4><div class="rt" id="dMethod"></div></div>
+    <div class="detail-block"><h4 id="hResults">3. Resultados completos</h4><div class="rt" id="dResults"></div></div>
+    <div class="detail-block"><h4 id="hDiscussion">4. Discussão dos autores</h4><div class="rt" id="dDiscussion"></div></div>
+    <div class="detail-block"><h4 id="hLimitations">5. Limitações</h4><div class="rt" id="dLimitations"></div></div>
+    <div class="detail-block"><h4 id="hEcological">6. Conexão com Dinâmica Ecológica / CLA</h4><div class="rt" id="dEcological"></div></div>
+    <div class="detail-block"><h4 id="hApplication">7. Aplicação prática para goleiros</h4><div class="rt" id="dApplication"></div></div>
+    <div class="detail-block"><h4 id="hSourceNote">8. Nota metodológica</h4><div class="rt" id="dSourceNote"></div></div>
 
     <div class="modal-actions">
       <div style="font-size:12px;color:var(--ink-soft);" id="dConfidenceLabel"></div>
@@ -518,7 +529,7 @@ function renderGrid(){
     card.className = 'card';
     card.style.setProperty('--source-color', colorForCategory(primaryCat));
     card.innerHTML = `
-      <div class="card-year">${a.year||'—'}</div>
+      <div class="card-year">${a.year||'—'}${a.kind && a.kind!=='Estudo Empírico' ? ` · ${escapeHtml(a.kind)}` : ''}</div>
       <div class="card-title">${escapeHtml(a.title)}</div>
       <div class="card-authors">${escapeHtml(a.authors)}${a.journal? ' · '+escapeHtml(a.journal):''}</div>
       <div class="card-tags">${(a.categories||[]).map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join('')}</div>
@@ -539,8 +550,8 @@ function renderGrid(){
 const formOverlay = document.getElementById('formOverlay');
 const detailOverlay = document.getElementById('detailOverlay');
 
-const FORM_FIELDS = ['title','year','authors','journal','link','sourceType','shortSummary','context','method','results','discussion','limitations','ecological','application','sourceNote'];
-const FIELD_TO_INPUT = {title:'fTitle',year:'fYear',authors:'fAuthors',journal:'fJournal',link:'fLink',sourceType:'fSourceType',shortSummary:'fShortSummary',context:'fContext',method:'fMethod',results:'fResults',discussion:'fDiscussion',limitations:'fLimitations',ecological:'fEcological',application:'fApplication',sourceNote:'fSourceNote'};
+const FORM_FIELDS = ['title','year','authors','journal','link','sourceType','kind','shortSummary','context','method','results','discussion','limitations','ecological','application','sourceNote'];
+const FIELD_TO_INPUT = {title:'fTitle',year:'fYear',authors:'fAuthors',journal:'fJournal',link:'fLink',sourceType:'fSourceType',kind:'fKind',shortSummary:'fShortSummary',context:'fContext',method:'fMethod',results:'fResults',discussion:'fDiscussion',limitations:'fLimitations',ecological:'fEcological',application:'fApplication',sourceNote:'fSourceNote'};
 
 function openForm(article){
   editingId = article ? article.id : null;
@@ -550,6 +561,8 @@ function openForm(article){
     document.getElementById(FIELD_TO_INPUT[f]).value = article ? (article[f] || '') : '';
   });
   if(!article) document.getElementById('fSourceType').value = 'Primária';
+  if(!article) document.getElementById('fKind').value = 'Estudo Empírico';
+  applyKindLabelsToForm(document.getElementById('fKind').value);
   selectedCategories = article ? [...(article.categories||[])] : [];
   currentConfidence = article ? (article.confidence||3) : 3;
   renderChips();
@@ -600,6 +613,7 @@ function openDetail(id){
   const a = articles.find(x=>x.id===id);
   if(!a) return;
   currentDetailId = id;
+  applyKindLabelsToDetail(a.kind || 'Estudo Empírico');
   document.getElementById('dTitle').textContent = a.title;
   document.getElementById('dMeta').innerHTML = `<span>${escapeHtml(a.authors)}</span><span>${a.year||''}</span><span>${escapeHtml(a.journal||'')}</span><span>${escapeHtml(a.sourceType||'')}</span>`;
   document.getElementById('dTags').innerHTML = (a.categories||[]).map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join('');
@@ -654,6 +668,49 @@ document.getElementById('importFile').addEventListener('change', e=>{
   e.target.value = '';
 });
 
+/* ---------------- Section labels by article kind ---------------- */
+const SECTION_LABELS = {
+  'Estudo Empírico': {
+    lblContext:'1. Contexto e objetivo do estudo', lblMethod:'2. Metodologia detalhada', lblResults:'3. Resultados completos',
+    lblDiscussion:'4. Discussão dos autores', lblLimitations:'5. Limitações declaradas', lblEcological:'6. Conexão com Dinâmica Ecológica / CLA',
+    lblApplication:'7. Aplicação prática para goleiros', lblSourceNote:'8. Nota metodológica sobre a fonte'
+  },
+  'Revisão Teórica': {
+    lblContext:'1. Tese central e contexto', lblMethod:'2. Conceitos-chave e estrutura do argumento', lblResults:'3. Evidências e estudos citados',
+    lblDiscussion:'4. Debates e controvérsias', lblLimitations:'5. Limitações e críticas ao argumento', lblEcological:'6. Contribuição aos fundamentos teóricos (Dinâmica Ecológica/CLA)',
+    lblApplication:'7. Aplicação prática para goleiros', lblSourceNote:'8. Nota metodológica sobre a fonte'
+  },
+  'Meta-análise': {
+    lblContext:'1. Pergunta de pesquisa e escopo', lblMethod:'2. Metodologia da revisão (busca, critérios, estudos incluídos)', lblResults:'3. Resultados agregados',
+    lblDiscussion:'4. Discussão dos autores', lblLimitations:'5. Limitações declaradas', lblEcological:'6. Conexão com Dinâmica Ecológica / CLA',
+    lblApplication:'7. Aplicação prática para goleiros', lblSourceNote:'8. Nota metodológica sobre a fonte'
+  },
+  'Capítulo/Livro': {
+    lblContext:'1. Propósito do capítulo e contexto', lblMethod:'2. Estrutura e principais argumentos', lblResults:'3. Exemplos e evidências apresentadas',
+    lblDiscussion:'4. Discussão / síntese do autor', lblLimitations:'5. Limitações ou lacunas', lblEcological:'6. Conexão com Dinâmica Ecológica / CLA',
+    lblApplication:'7. Aplicação prática para goleiros', lblSourceNote:'8. Nota metodológica sobre a fonte'
+  }
+};
+const DETAIL_ID_MAP = {lblContext:'hContext', lblMethod:'hMethod', lblResults:'hResults', lblDiscussion:'hDiscussion', lblLimitations:'hLimitations', lblEcological:'hEcological', lblApplication:'hApplication', lblSourceNote:'hSourceNote'};
+
+function applyKindLabelsToForm(kind){
+  const labels = SECTION_LABELS[kind] || SECTION_LABELS['Estudo Empírico'];
+  Object.entries(labels).forEach(([id,text])=>{
+    const numMatch = text.match(/^(\d+\.\s)/);
+    const el = document.getElementById(id);
+    if(el) el.textContent = text;
+  });
+}
+function applyKindLabelsToDetail(kind){
+  const labels = SECTION_LABELS[kind] || SECTION_LABELS['Estudo Empírico'];
+  Object.entries(labels).forEach(([formId,text])=>{
+    const detailId = DETAIL_ID_MAP[formId];
+    const el = document.getElementById(detailId);
+    if(el) el.textContent = text.replace(/^\d+\.\s/, (m)=>m); // keep numbering as-is
+  });
+}
+document.getElementById('fKind').addEventListener('change', e=> applyKindLabelsToForm(e.target.value));
+
 /* ---------------- Category management ---------------- */
 const catManageOverlay = document.getElementById('catManageOverlay');
 document.getElementById('manageCatsBtn').addEventListener('click', ()=>{ renderCatManageList(); catManageOverlay.classList.add('open'); });
@@ -696,16 +753,17 @@ document.getElementById('catManageAddBtn').addEventListener('click', ()=>{
 
 /* ---------------- PDF export (via print) ---------------- */
 function exportArticlePdf(a){
+  const L = SECTION_LABELS[a.kind] || SECTION_LABELS['Estudo Empírico'];
   const sectionMap = [
     ['Resumo curto', a.shortSummary],
-    ['1. Contexto e objetivo', a.context],
-    ['2. Metodologia', a.method],
-    ['3. Resultados completos', a.results],
-    ['4. Discussão dos autores', a.discussion],
-    ['5. Limitações', a.limitations],
-    ['6. Conexão com Dinâmica Ecológica / CLA', a.ecological],
-    ['7. Aplicação prática para goleiros', a.application],
-    ['8. Nota metodológica', a.sourceNote]
+    [L.lblContext, a.context],
+    [L.lblMethod, a.method],
+    [L.lblResults, a.results],
+    [L.lblDiscussion, a.discussion],
+    [L.lblLimitations, a.limitations],
+    [L.lblEcological, a.ecological],
+    [L.lblApplication, a.application],
+    [L.lblSourceNote, a.sourceNote]
   ];
   const printArea = document.getElementById('printArea');
   printArea.innerHTML = `
