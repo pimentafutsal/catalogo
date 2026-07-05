@@ -938,7 +938,20 @@ const DEFAULT_FIREBASE_CONFIG = {
 };
 
 const savedFbConfig = getFbConfig() || DEFAULT_FIREBASE_CONFIG;
-if(savedFbConfig) initFirebase(savedFbConfig);
+// Delayed + guarded auto-connect: some mobile browsers (notably iOS Safari on first
+// load) aren't fully ready for Firebase/IndexedDB access at initial script parse time.
+// Waiting for 'load' and catching any exception here makes failures visible in the
+// UI itself, so future issues can be diagnosed without opening dev tools.
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{
+    try{
+      if(savedFbConfig) initFirebase(savedFbConfig);
+    }catch(err){
+      console.error('Falha no auto-connect do Firebase:', err);
+      setSyncStatus(false, 'Erro: ' + (err && err.message ? err.message : 'auto-connect falhou'));
+    }
+  }, 300);
+});
 </script>
 </body>
 </html>
