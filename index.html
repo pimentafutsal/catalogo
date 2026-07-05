@@ -15,6 +15,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
 <style>
   :root{
     --off-white:#F4F1EC;
@@ -161,6 +162,8 @@
   .rt-table th, .rt-table td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
   .rt-table th{background:var(--blue-deep);color:#fff;font-family:'Oswald';font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
   .rt-table tr:nth-child(even) td{background:#F3F1EB;}
+  .rt-mermaid{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;margin:10px 0 16px;overflow-x:auto;text-align:center;}
+  .rt-mermaid svg{max-width:100%;height:auto;}
   .detail-meta{display:flex;gap:16px;flex-wrap:wrap;margin:14px 0 18px;font-size:12.5px;color:var(--ink-soft);}
 
   footer{position:relative;z-index:2;text-align:center;padding:26px;font-size:11.5px;color:var(--ink-soft);border-top:1px solid var(--line);}
@@ -194,6 +197,8 @@
     #printArea table.rt-table th, #printArea table.rt-table td{border:1px solid #DAD5C9;padding:5px 8px;text-align:left;}
     #printArea table.rt-table th{background:#2C4FB0;color:#fff;font-family:Arial,sans-serif;text-transform:uppercase;font-size:9.5px;}
     #printArea table.rt-table tr:nth-child(even) td{background:#F3F1EB;}
+    #printArea .rt-mermaid{border:1px solid #DAD5C9;border-radius:8px;padding:10px;margin:8px 0 14px;text-align:center;page-break-inside:avoid;}
+    #printArea .rt-mermaid svg{max-width:100%;height:auto;}
     @page{margin:18mm;}
   }
 </style>
@@ -324,7 +329,7 @@
       <textarea id="fLimitations" placeholder="O que os próprios autores apontam como limitação do estudo"></textarea>
 
       <div class="section-divider" id="lblEcological">6. Conexão com Dinâmica Ecológica / CLA</div>
-      <div class="field-hint">Como o achado se relaciona a variabilidade, auto-organização, graus de liberdade, restrições de tarefa/ambiente/organismo</div>
+      <div class="field-hint">Como o achado se relaciona a variabilidade, auto-organização, graus de liberdade, restrições de tarefa/ambiente/organismo. Para inserir um diagrama/mapa conceitual real, use um bloco ```mermaid ... ``` (sintaxe Mermaid) em qualquer campo — renderiza como diagrama de verdade, não como texto.</div>
       <textarea class="tall" id="fEcological" placeholder="Conexão explícita com os fundamentos teóricos do seu método"></textarea>
 
       <div class="section-divider" id="lblApplication">7. Aplicação prática para goleiros</div>
@@ -474,15 +479,42 @@ function renderChips(){
 function escapeHtml(str){ if(!str) return ''; const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
 function truncate(str,n){ if(!str) return ''; return str.length>n? str.slice(0,n).trim()+'…' : str; }
 
-/* Renders plain text into paragraphs, auto-detecting simple pipe-delimited tables:
-   | Col A | Col B |
-   |---|---|
-   | valor | valor |
-   Any block matching that pattern becomes a real <table>; everything else stays as a paragraph. */
+/* Mermaid.js — initialized once, themed to match the FluxGK palette */
+if(typeof mermaid !== 'undefined'){
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#EAE6DC',
+      primaryTextColor: '#17181C',
+      primaryBorderColor: '#3E6AE0',
+      lineColor: '#4A4B52',
+      secondaryColor: '#F3F1EB',
+      tertiaryColor: '#FBFAF7',
+      fontFamily: 'Inter, sans-serif'
+    }
+  });
+}
+let mermaidCounter = 0;
+
+/* Renders plain text into paragraphs, auto-detecting:
+   1) simple pipe-delimited tables (see below)
+   2) fenced ```mermaid code blocks, rendered as real diagrams
+   Any block matching either pattern is converted; everything else stays as a paragraph. */
 function parseRichBlocks(text){
   if(!text) return '<p>—</p>';
   const blocks = text.split(/\n\s*\n/);
   return blocks.map(block=>{
+    const trimmed = block.trim();
+    const mermaidMatch = trimmed.match(/^```mermaid\s*([\s\S]*?)```$/);
+    if(mermaidMatch){
+      const code = mermaidMatch[1].trim();
+      const id = 'mmd-' + (mermaidCounter++) + '-' + Math.random().toString(36).slice(2,7);
+      // Store the raw code in a data attribute (base64) so mermaid.run can pick it up safely,
+      // regardless of quote/newline characters in the diagram source.
+      const encoded = btoa(unescape(encodeURIComponent(code)));
+      return `<div class="rt-mermaid"><div class="mermaid" id="${id}" data-mmd="${encoded}"></div></div>`;
+    }
     const lines = block.split('\n').filter(l=>l.trim().length);
     const looksLikeTable = lines.length>=2 && /^\|/.test(lines[0].trim()) && /^\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)+\|?$/.test(lines[1].trim());
     if(looksLikeTable){
@@ -496,6 +528,24 @@ function parseRichBlocks(text){
     }
     return `<p>${escapeHtml(block).replace(/\n/g,'<br>')}</p>`;
   }).join('');
+}
+
+/* After injecting parsed rich text into the DOM, call this to actually draw any
+   mermaid diagrams found inside the given container. */
+async function renderMermaidIn(containerEl){
+  if(typeof mermaid === 'undefined' || !containerEl) return;
+  const nodes = containerEl.querySelectorAll('.mermaid[data-mmd]');
+  for(const node of nodes){
+    try{
+      const code = decodeURIComponent(escape(atob(node.getAttribute('data-mmd'))));
+      const { svg } = await mermaid.render(node.id + '-svg', code);
+      node.innerHTML = svg;
+      node.removeAttribute('data-mmd');
+    }catch(err){
+      console.error('Erro ao renderizar diagrama Mermaid:', err);
+      node.innerHTML = `<p style="color:var(--red);font-size:12px;">Não foi possível renderizar este diagrama (verifique a sintaxe Mermaid).</p>`;
+    }
+  }
 }
 
 function renderGrid(){
@@ -619,6 +669,7 @@ function openDetail(id){
   document.getElementById('dTags').innerHTML = (a.categories||[]).map(c=>`<span class="tag">${escapeHtml(c)}</span>`).join('');
   const map = {dShortSummary:'shortSummary',dContext:'context',dMethod:'method',dResults:'results',dDiscussion:'discussion',dLimitations:'limitations',dEcological:'ecological',dApplication:'application',dSourceNote:'sourceNote'};
   Object.entries(map).forEach(([elId,field])=>{ document.getElementById(elId).innerHTML = parseRichBlocks(a[field]); });
+  renderMermaidIn(document.getElementById('detailOverlay'));
   document.getElementById('dConfidenceLabel').textContent = 'Confiança na evidência: ' + '●'.repeat(a.confidence||0) + '○'.repeat(5-(a.confidence||0));
   const linkEl = document.getElementById('dLink');
   if(a.link){ linkEl.href = a.link; linkEl.style.display='inline-block'; } else { linkEl.style.display='none'; }
@@ -752,7 +803,7 @@ document.getElementById('catManageAddBtn').addEventListener('click', ()=>{
 });
 
 /* ---------------- PDF export (via print) ---------------- */
-function exportArticlePdf(a){
+async function exportArticlePdf(a){
   const L = SECTION_LABELS[a.kind] || SECTION_LABELS['Estudo Empírico'];
   const sectionMap = [
     ['Resumo curto', a.shortSummary],
@@ -775,6 +826,7 @@ function exportArticlePdf(a){
     ${sectionMap.map(([h,txt])=> txt ? `<h2>${escapeHtml(h)}</h2>${parseRichBlocks(txt)}` : '').join('')}
   `;
   document.title = (a.title||'artigo').slice(0,60);
+  await renderMermaidIn(printArea);
   window.print();
 }
 document.getElementById('dPdfBtn').addEventListener('click', ()=>{
