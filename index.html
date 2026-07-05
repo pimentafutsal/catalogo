@@ -164,6 +164,31 @@
   .rt-table tr:nth-child(even) td{background:#F3F1EB;}
   .rt-mermaid{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;margin:10px 0 16px;overflow-x:auto;text-align:center;}
   .rt-mermaid svg{max-width:100%;height:auto;}
+
+  .card-title{padding-right:26px;}
+  .card-readcheck{
+    position:absolute;top:14px;right:14px;width:22px;height:22px;border-radius:50%;
+    border:1.5px solid var(--line);background:var(--paper);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;
+    transition:all .15s;z-index:2;
+  }
+  .card-readcheck:hover{border-color:var(--green);}
+  .card-readcheck.read{background:var(--green);border-color:var(--green);color:#fff;}
+
+  .read-toggle-row{
+    display:flex;align-items:center;gap:8px;margin:2px 0 18px;padding:10px 14px;
+    background:var(--tag-bg);border-radius:8px;cursor:pointer;user-select:none;font-size:13px;color:var(--ink);
+  }
+  .read-toggle-row input{width:16px;height:16px;cursor:pointer;accent-color:var(--green);}
+
+  .zoom-controls{display:flex;align-items:center;gap:6px;}
+  .zoom-btn{
+    width:28px;height:28px;border-radius:6px;border:1.5px solid var(--line);background:var(--paper);
+    cursor:pointer;font-family:'Oswald';font-size:13px;font-weight:600;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .zoom-btn:hover{border-color:var(--blue);color:var(--blue);}
+  .zoom-label{font-size:11px;color:var(--ink-soft);min-width:36px;text-align:center;font-family:'Oswald';}
   .detail-meta{display:flex;gap:16px;flex-wrap:wrap;margin:14px 0 18px;font-size:12.5px;color:var(--ink-soft);}
 
   footer{position:relative;z-index:2;text-align:center;padding:26px;font-size:11.5px;color:var(--ink-soft);border-top:1px solid var(--line);}
@@ -232,6 +257,11 @@
     <option value="Revisão">Revisão</option>
     <option value="Meta-análise">Meta-análise</option>
     <option value="Livro/Capítulo">Livro/Capítulo</option>
+  </select>
+  <select id="filterRead">
+    <option value="">Lidos e não lidos</option>
+    <option value="read">Só lidos</option>
+    <option value="unread">Só não lidos</option>
   </select>
   <button class="btn btn-ghost" id="exportBtn">Exportar JSON</button>
   <button class="btn btn-ghost" id="importBtn">Importar JSON</button>
@@ -363,6 +393,19 @@
     <div class="detail-meta" id="dMeta"></div>
     <div class="card-tags" id="dTags" style="margin-bottom:20px;"></div>
 
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:4px;">
+      <label class="read-toggle-row" style="margin-bottom:0;">
+        <input type="checkbox" id="dReadCheckbox">
+        <span id="dReadLabel">Já li este artigo</span>
+      </label>
+      <div class="zoom-controls">
+        <button type="button" class="zoom-btn" id="zoomOutBtn">A−</button>
+        <span class="zoom-label" id="zoomLabel">100%</span>
+        <button type="button" class="zoom-btn" id="zoomInBtn">A+</button>
+      </div>
+    </div>
+
+    <div id="detailZoomWrap">
     <div class="detail-block"><h4>Resumo curto</h4><div class="rt" id="dShortSummary"></div></div>
     <div class="detail-block"><h4 id="hContext">1. Contexto e objetivo</h4><div class="rt" id="dContext"></div></div>
     <div class="detail-block"><h4 id="hMethod">2. Metodologia</h4><div class="rt" id="dMethod"></div></div>
@@ -372,6 +415,7 @@
     <div class="detail-block"><h4 id="hEcological">6. Conexão com Dinâmica Ecológica / CLA</h4><div class="rt" id="dEcological"></div></div>
     <div class="detail-block"><h4 id="hApplication">7. Aplicação prática para goleiros</h4><div class="rt" id="dApplication"></div></div>
     <div class="detail-block"><h4 id="hSourceNote">8. Nota metodológica</h4><div class="rt" id="dSourceNote"></div></div>
+    </div>
 
     <div class="modal-actions">
       <div style="font-size:12px;color:var(--ink-soft);" id="dConfidenceLabel"></div>
@@ -479,6 +523,18 @@ function renderChips(){
 function escapeHtml(str){ if(!str) return ''; const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
 function truncate(str,n){ if(!str) return ''; return str.length>n? str.slice(0,n).trim()+'…' : str; }
 
+function toggleRead(id){
+  const a = articles.find(x=>x.id===id);
+  if(!a) return;
+  a.read = !a.read;
+  save();
+  renderGrid();
+  if(currentDetailId === id){
+    const cb = document.getElementById('dReadCheckbox');
+    if(cb) cb.checked = a.read;
+  }
+}
+
 /* Mermaid.js — initialized once, themed to match the FluxGK palette */
 if(typeof mermaid !== 'undefined'){
   mermaid.initialize({
@@ -552,10 +608,13 @@ function renderGrid(){
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   const fCat = document.getElementById('filterCategory').value;
   const fSrc = document.getElementById('filterSource').value;
+  const fRead = document.getElementById('filterRead').value;
 
   let list = articles.filter(a=>{
     if(fCat && !(a.categories||[]).includes(fCat)) return false;
     if(fSrc && a.sourceType !== fSrc) return false;
+    if(fRead === 'read' && !a.read) return false;
+    if(fRead === 'unread' && a.read) return false;
     if(q){
       const hay = [a.title,a.authors,a.shortSummary,a.context,a.results,a.ecological,(a.categories||[]).join(' ')].join(' ').toLowerCase();
       if(!hay.includes(q)) return false;
@@ -579,6 +638,7 @@ function renderGrid(){
     card.className = 'card';
     card.style.setProperty('--source-color', colorForCategory(primaryCat));
     card.innerHTML = `
+      <div class="card-readcheck ${a.read ? 'read' : ''}" data-id="${a.id}" title="${a.read ? 'Marcar como não lido' : 'Marcar como lido'}">✓</div>
       <div class="card-year">${a.year||'—'}${a.kind && a.kind!=='Estudo Empírico' ? ` · ${escapeHtml(a.kind)}` : ''}</div>
       <div class="card-title">${escapeHtml(a.title)}</div>
       <div class="card-authors">${escapeHtml(a.authors)}${a.journal? ' · '+escapeHtml(a.journal):''}</div>
@@ -588,6 +648,10 @@ function renderGrid(){
         <span>${escapeHtml(a.sourceType||'')}</span>
         <div class="confidence">${[1,2,3,4,5].map(i=>`<span class="${i<=(a.confidence||0)?'on':''}"></span>`).join('')}</div>
       </div>`;
+    card.querySelector('.card-readcheck').addEventListener('click', (e)=>{
+      e.stopPropagation();
+      toggleRead(a.id);
+    });
     card.addEventListener('click', ()=> openDetail(a.id));
     grid.appendChild(card);
   });
@@ -674,8 +738,34 @@ function openDetail(id){
   const linkEl = document.getElementById('dLink');
   if(a.link){ linkEl.href = a.link; linkEl.style.display='inline-block'; } else { linkEl.style.display='none'; }
   document.getElementById('dEditBtn').onclick = ()=>{ detailOverlay.classList.remove('open'); openForm(a); };
+  document.getElementById('dReadCheckbox').checked = !!a.read;
+  document.getElementById('dReadLabel').textContent = a.read ? 'Lido ✓' : 'Já li este artigo';
+  applyDetailZoom();
   detailOverlay.classList.add('open');
 }
+document.getElementById('dReadCheckbox').addEventListener('change', (e)=>{
+  if(!currentDetailId) return;
+  const a = articles.find(x=>x.id===currentDetailId);
+  if(!a) return;
+  a.read = e.target.checked;
+  document.getElementById('dReadLabel').textContent = a.read ? 'Lido ✓' : 'Já li este artigo';
+  save();
+  renderGrid();
+});
+
+/* ---------------- Zoom control (detail modal only) ---------------- */
+const ZOOM_KEY = 'fluxgk_catalogo_detailzoom';
+let detailZoom = parseFloat(localStorage.getItem(ZOOM_KEY)) || 1;
+function applyDetailZoom(){
+  detailZoom = Math.min(1.8, Math.max(0.7, detailZoom));
+  const wrap = document.getElementById('detailZoomWrap');
+  if(wrap) wrap.style.zoom = detailZoom;
+  const label = document.getElementById('zoomLabel');
+  if(label) label.textContent = Math.round(detailZoom*100) + '%';
+  localStorage.setItem(ZOOM_KEY, detailZoom);
+}
+document.getElementById('zoomInBtn').addEventListener('click', ()=>{ detailZoom += 0.1; applyDetailZoom(); });
+document.getElementById('zoomOutBtn').addEventListener('click', ()=>{ detailZoom -= 0.1; applyDetailZoom(); });
 
 /* ---------------- Events ---------------- */
 document.getElementById('newBtn').addEventListener('click', ()=> openForm(null));
@@ -688,6 +778,7 @@ document.querySelectorAll('[data-close]').forEach(btn=>{
 document.getElementById('searchInput').addEventListener('input', renderGrid);
 document.getElementById('filterCategory').addEventListener('change', renderGrid);
 document.getElementById('filterSource').addEventListener('change', renderGrid);
+document.getElementById('filterRead').addEventListener('change', renderGrid);
 
 document.getElementById('exportBtn').addEventListener('click', ()=>{
   const blob = new Blob([JSON.stringify({articles,categories}, null, 2)], {type:'application/json'});
