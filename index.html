@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- FLUXGK_CATALOGO_BUILD_MARKER: v-diagram-bg-fix-2 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -960,6 +961,15 @@ function dlApply(){
 }
 function dlOpen(svgHtml){
   dlContent.innerHTML = svgHtml;
+  // Applied directly via JS (not just CSS) so it can never be silently skipped by caching
+  // or specificity issues — this always wins since it's set at the moment of opening.
+  dlContent.style.background = '#FBFAF7';
+  dlContent.style.padding = '28px';
+  dlContent.style.borderRadius = '14px';
+  dlContent.style.boxShadow = '0 12px 40px rgba(0,0,0,.35)';
+  dlContent.style.display = 'inline-block';
+  const svgEl = dlContent.querySelector('svg');
+  if(svgEl){ svgEl.style.background = '#FBFAF7'; svgEl.style.display = 'block'; }
   dlState = { scale: 1, x: 0, y: 0 };
   dlApply();
   dlOverlay.classList.add('open');
