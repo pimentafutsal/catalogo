@@ -162,7 +162,12 @@
   .rt-table th, .rt-table td{border:1px solid var(--line);padding:7px 10px;text-align:left;}
   .rt-table th{background:var(--blue-deep);color:#fff;font-family:'Oswald';font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
   .rt-table tr:nth-child(even) td{background:#F3F1EB;}
-  .rt-mermaid{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;margin:10px 0 16px;overflow-x:auto;text-align:center;}
+  .rt-mermaid{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;margin:10px 0 16px;overflow-x:auto;text-align:center;cursor:zoom-in;position:relative;}
+  .rt-mermaid:hover{border-color:var(--blue);}
+  .rt-mermaid::after{
+    content:'⤢ Ampliar';position:absolute;bottom:8px;right:10px;font-size:10.5px;font-family:'Inter';
+    color:var(--ink-soft);background:var(--off-white);padding:2px 8px;border-radius:10px;opacity:.85;
+  }
   .rt-mermaid svg{max-width:100%;height:auto;}
 
   .card-title{padding-right:26px;}
@@ -425,6 +430,23 @@
         <button class="btn btn-primary" id="dEditBtn">Editar</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Diagram lightbox: dedicated zoom/pan viewer for Mermaid diagrams, independent of browser zoom -->
+<div class="overlay" id="diagramLightbox" style="z-index:30;background:rgba(23,24,28,.92);padding:0;align-items:stretch;">
+  <div style="display:flex;flex-direction:column;width:100%;height:100%;">
+    <div style="display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:14px 18px;">
+      <button type="button" class="zoom-btn" id="dlZoomOut" style="background:var(--paper);">−</button>
+      <span class="zoom-label" id="dlZoomLabel" style="color:#fff;">100%</span>
+      <button type="button" class="zoom-btn" id="dlZoomIn" style="background:var(--paper);">+</button>
+      <button type="button" class="zoom-btn" id="dlZoomReset" style="background:var(--paper);width:auto;padding:0 10px;">Ajustar</button>
+      <button type="button" class="close" id="dlClose" style="position:static;color:#fff;font-size:28px;">&times;</button>
+    </div>
+    <div id="dlViewport" style="flex:1;overflow:hidden;touch-action:none;cursor:grab;display:flex;align-items:center;justify-content:center;">
+      <div id="dlContent" style="transform-origin:0 0;"></div>
+    </div>
+    <div style="text-align:center;color:rgba(255,255,255,.5);font-size:12px;padding:10px;">Arraste para mover · use os botões ou pinça para ampliar</div>
   </div>
 </div>
 
@@ -924,6 +946,89 @@ document.getElementById('dPdfBtn').addEventListener('click', ()=>{
   const a = articles.find(x=>x.id===currentDetailId);
   if(a) exportArticlePdf(a);
 });
+
+/* ---------------- Diagram lightbox (zoom/pan for Mermaid diagrams) ---------------- */
+const dlOverlay = document.getElementById('diagramLightbox');
+const dlViewport = document.getElementById('dlViewport');
+const dlContent = document.getElementById('dlContent');
+let dlState = { scale: 1, x: 0, y: 0 };
+
+function dlApply(){
+  dlContent.style.transform = `translate(${dlState.x}px, ${dlState.y}px) scale(${dlState.scale})`;
+  document.getElementById('dlZoomLabel').textContent = Math.round(dlState.scale * 100) + '%';
+}
+function dlOpen(svgHtml){
+  dlContent.innerHTML = svgHtml;
+  dlState = { scale: 1, x: 0, y: 0 };
+  dlApply();
+  dlOverlay.classList.add('open');
+}
+function dlClose(){ dlOverlay.classList.remove('open'); dlContent.innerHTML=''; }
+document.getElementById('dlClose').addEventListener('click', dlClose);
+dlOverlay.addEventListener('click', e=>{ if(e.target===dlOverlay) dlClose(); });
+
+document.getElementById('dlZoomIn').addEventListener('click', ()=>{ dlState.scale = Math.min(6, dlState.scale + 0.25); dlApply(); });
+document.getElementById('dlZoomOut').addEventListener('click', ()=>{ dlState.scale = Math.max(0.3, dlState.scale - 0.25); dlApply(); });
+document.getElementById('dlZoomReset').addEventListener('click', ()=>{ dlState = { scale: 1, x: 0, y: 0 }; dlApply(); });
+
+// Open the lightbox whenever a rendered diagram (inside the detail modal) is clicked
+document.getElementById('detailOverlay').addEventListener('click', (e)=>{
+  const container = e.target.closest('.rt-mermaid');
+  if(!container) return;
+  const svg = container.querySelector('svg');
+  if(!svg) return;
+  dlOpen(svg.outerHTML);
+});
+
+// Drag-to-pan (mouse + touch via Pointer Events) and pinch-to-zoom (two touch pointers)
+const dlPointers = new Map();
+let dlDragging = false, dlLastX = 0, dlLastY = 0, dlPinchStartDist = 0, dlPinchStartScale = 1;
+
+function dlDist(pts){
+  const [a,b] = pts;
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+dlViewport.addEventListener('pointerdown', (e)=>{
+  dlViewport.setPointerCapture(e.pointerId);
+  dlPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if(dlPointers.size === 1){
+    dlDragging = true; dlLastX = e.clientX; dlLastY = e.clientY;
+    dlViewport.style.cursor = 'grabbing';
+  } else if(dlPointers.size === 2){
+    dlDragging = false;
+    dlPinchStartDist = dlDist([...dlPointers.values()]);
+    dlPinchStartScale = dlState.scale;
+  }
+});
+dlViewport.addEventListener('pointermove', (e)=>{
+  if(!dlPointers.has(e.pointerId)) return;
+  dlPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if(dlPointers.size === 2){
+    const dist = dlDist([...dlPointers.values()]);
+    dlState.scale = Math.min(6, Math.max(0.3, dlPinchStartScale * (dist / dlPinchStartDist)));
+    dlApply();
+  } else if(dlDragging && dlPointers.size === 1){
+    const dx = e.clientX - dlLastX, dy = e.clientY - dlLastY;
+    dlState.x += dx; dlState.y += dy;
+    dlLastX = e.clientX; dlLastY = e.clientY;
+    dlApply();
+  }
+});
+function dlPointerEnd(e){
+  dlPointers.delete(e.pointerId);
+  dlDragging = dlPointers.size === 1;
+  dlViewport.style.cursor = 'grab';
+}
+dlViewport.addEventListener('pointerup', dlPointerEnd);
+dlViewport.addEventListener('pointercancel', dlPointerEnd);
+dlViewport.addEventListener('pointerleave', dlPointerEnd);
+// Mouse wheel / trackpad zoom, centered on cursor position
+dlViewport.addEventListener('wheel', (e)=>{
+  e.preventDefault();
+  const delta = e.deltaY > 0 ? -0.15 : 0.15;
+  dlState.scale = Math.min(6, Math.max(0.3, dlState.scale + delta));
+  dlApply();
+}, { passive:false });
 
 /* ---------------- Firebase sync ---------------- */
 const FB_CONFIG_KEY = 'fluxgk_catalogo_fbconfig';
