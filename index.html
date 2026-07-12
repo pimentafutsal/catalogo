@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- FLUXGK_CATALOGO_BUILD_MARKER: v-mermaid-blankline-fix-3 -->
+<!-- FLUXGK_CATALOGO_BUILD_MARKER: v-sync-merge-fix-4 -->
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -551,6 +551,7 @@ function toggleRead(id){
   const a = articles.find(x=>x.id===id);
   if(!a) return;
   a.read = !a.read;
+  a.updatedAt = Date.now();
   save();
   renderGrid();
   if(currentDetailId === id){
@@ -743,7 +744,8 @@ document.getElementById('addCategoryBtn').addEventListener('click', ()=>{
 
 document.getElementById('articleForm').addEventListener('submit', e=>{
   e.preventDefault();
-  const data = { id: editingId || 'a_'+Date.now(), categories:[...selectedCategories], confidence: currentConfidence };
+  const existing = editingId ? articles.find(a=>a.id===editingId) : null;
+  const data = { ...(existing||{}), id: editingId || 'a_'+Date.now(), categories:[...selectedCategories], confidence: currentConfidence, updatedAt: Date.now() };
   FORM_FIELDS.forEach(f=>{
     const el = document.getElementById(FIELD_TO_INPUT[f]);
     data[f] = f==='year' ? (parseInt(el.value)||null) : el.value.trim();
@@ -787,6 +789,7 @@ document.getElementById('dReadCheckbox').addEventListener('change', (e)=>{
   const a = articles.find(x=>x.id===currentDetailId);
   if(!a) return;
   a.read = e.target.checked;
+  a.updatedAt = Date.now();
   document.getElementById('dReadLabel').textContent = a.read ? 'Lido ✓' : 'Já li este artigo';
   save();
   renderGrid();
@@ -1058,7 +1061,7 @@ dlViewport.addEventListener('wheel', (e)=>{
 
 /* ---------------- Firebase sync ---------------- */
 const FB_CONFIG_KEY = 'fluxgk_catalogo_fbconfig';
-let fbApp = null, fbDb = null, fbConnected = false, suppressNextWrite = false;
+let fbApp = null, fbDb = null, fbConnected = false;
 
 function getFbConfig(){ try{ return JSON.parse(localStorage.getItem(FB_CONFIG_KEY) || 'null'); }catch(e){ return null; } }
 function setSyncStatus(connected, label){
@@ -1086,20 +1089,54 @@ function initFirebase(config){
     alert('Não foi possível conectar ao Firebase. Verifique as credenciais.');
   }
 }
+
+/* Merges remote data into local state instead of blindly overwriting it.
+   Per article: whichever side has the newer 'updatedAt' wins. Articles that exist
+   on only one side (e.g. added locally before this device ever synced) are kept,
+   not discarded. Returns whether the merged result differs from what the server
+   currently has, so the caller can push the healed state back up. */
+function mergeArticles(remoteArticles){
+  const byId = new Map();
+  articles.forEach(a=> byId.set(a.id, a));
+  let differsFromRemote = false;
+
+  remoteArticles.forEach(remote=>{
+    const local = byId.get(remote.id);
+    if(!local){
+      byId.set(remote.id, remote);
+    } else {
+      const localTime = local.updatedAt || 0;
+      const remoteTime = remote.updatedAt || 0;
+      if(remoteTime > localTime){
+        byId.set(remote.id, remote);
+      } else if(localTime > remoteTime){
+        differsFromRemote = true; // local edit hasn't reached the server yet
+      }
+    }
+  });
+  const remoteIds = new Set(remoteArticles.map(r=>r.id));
+  articles.forEach(a=>{ if(!remoteIds.has(a.id)) differsFromRemote = true; }); // local-only article
+
+  return { merged: Array.from(byId.values()), differsFromRemote };
+}
+
 function attachDbListener(){
   fbDb.ref('fluxgk_catalogo').on('value', snap=>{
     const data = snap.val();
     if(data){
-      suppressNextWrite = true;
-      articles = data.articles ? Object.values(data.articles) : [];
-      if(data.categories) categories = Object.values(data.categories);
+      const remoteArticles = data.articles ? Object.values(data.articles) : [];
+      const remoteCategories = data.categories ? Object.values(data.categories) : [];
+      const { merged, differsFromRemote } = mergeArticles(remoteArticles);
+      articles = merged;
+      categories = Array.from(new Set([...categories, ...remoteCategories]));
       renderCategoryFilter(); renderGrid();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({articles, categories}));
+      if(differsFromRemote) pushToFirebase(); // heal: push local-only/newer edits back up
     }
   }, err=>{ console.error('Erro de sincronização Firebase:', err); setSyncStatus(false, 'Erro de conexão — verifique as regras do banco'); });
 }
 function pushToFirebase(){
   if(!fbConnected || !fbDb) return;
-  if(suppressNextWrite){ suppressNextWrite = false; return; }
   const articlesObj = {}; articles.forEach(a=> articlesObj[a.id] = a);
   fbDb.ref('fluxgk_catalogo').set({articles: articlesObj, categories}).catch(err=> console.error('Erro ao enviar dados ao Firebase:', err));
 }
